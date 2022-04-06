@@ -6,7 +6,7 @@
            
         </li>
         <li class="page-item">
-             <a @click="onPageChange('next')" :class="{'active': currentPage < 2 }">Next page</a>
+             <a @click="onPageChange('next')" :class="{'active': currentPage < this.pages.length }">Next page</a>
         </li>
     </ul>
     
