@@ -3,7 +3,6 @@
     <router-link :to="{ name: 'movie-detail', params: { id: movie.id }}">
 
         <div class="movie-item">
-
             <div class="pic col-4" v-bind:style="{ backgroundImage: 'url(' + imageUrl + ')' }">
             </div>
 
@@ -50,7 +49,7 @@ export default {
             }
         },
         imageUrl(){
-            return `https://image.tmdb.org/t/p/w500${this.movie.backdrop_path}`
+            return `https://image.tmdb.org/t/p/w500${this.movie.poster_path}`
         }
     }
 }
