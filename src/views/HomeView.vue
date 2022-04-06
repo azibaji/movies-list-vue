@@ -4,7 +4,7 @@
     <div class="header">
       <div>
         <label>Search by release date:</label>
-        <input type="date" value="2018-07-22" id="movie-date"/>
+        <input type="date" v-model="dateInput"/>
       </div>
       
       <button @click="searchMovieByDate"> search</button>
@@ -45,7 +45,8 @@ export default {
     pageSize:10,
     allMovies:[],
     startIndex:1,
-    filteredFlag:false
+    filteredFlag:false,
+    dateInput:'2018-07-22'
   }),
   created(){
     this.getListOfMovies()
@@ -83,8 +84,7 @@ export default {
     searchMovieByDate(){
       this.filteredFlag=true
       const movies = this.movies
-      const datechosen = document.getElementById('movie-date').value
-      const filteredMovies = movies.filter(movie => movie.release_date === datechosen)
+      const filteredMovies = movies.filter(movie => movie.release_date === this.dateInput)
       this.allMovies = filteredMovies
     }
   }
