@@ -1,9 +1,12 @@
 <template>
     <nav aria-label="Page navigation example">
     <ul class="paginations">
-        <li class="page-item" :class="{'active': currentPage === page }" v-for="page in pages" :key="page">
-                <a @click="onPageChange(page)" v-if="page === 1" :class="{'active': currentPage > 1 }">Perivius page</a> 
-                <a @click="onPageChange(page)" v-if="page === 2" :class="{'active': currentPage < 2 }">Next page</a>
+        <li class="page-item">
+            <a @click="onPageChange('previous')" :class="{'active': currentPage > 1 }">Perivius page</a> 
+           
+        </li>
+        <li class="page-item">
+             <a @click="onPageChange('next')" :class="{'active': currentPage < 2 }">Next page</a>
         </li>
     </ul>
     
@@ -12,6 +15,9 @@
 <script>
 import _ from 'lodash'
 export default {
+    data:()=>({
+        page:0
+    }),
     props:{
         itemsCount:{
             type:Number,
@@ -27,6 +33,9 @@ export default {
             required:true
         }
     },
+    created(){
+        this.page= this.currentPage
+    },
     computed:{
         pagesCount(){
             return Math.ceil(this.itemsCount / this.pageSize) === 1 ? null : Math.ceil(this.itemsCount / this.pageSize)
@@ -36,8 +45,20 @@ export default {
         }
     },
     methods:{
-        onPageChange(page){
-            this.$emit('onPageChange', page)
+        onPageChange(value){
+            switch(value){
+                case 'previous':
+                    if(this.page > 1){
+                        this.page--
+                    }
+                    break;
+                case 'next':
+                    if(this.page < this.pages.length){
+                        this.page ++
+                    }
+                    break;
+            }
+            this.$emit('onPageChange', this.page)
         },
     }
 }
