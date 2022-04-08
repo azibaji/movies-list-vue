@@ -1,18 +1,9 @@
 <template>
   <div class="home container">
-    
-    <div class="header">
-      <div>
-        <label>Search by release date:</label>
-        <input type="date" v-model="dateInput"/>
-      </div>
-      
-      <button @click="searchMovieByDate"> search</button>
-    </div>
 
-    <div class="movies" >
-      <movie-item :movie="movie" :genres="genres" v-for="movie in allMovies" :key="movie.id"/>
-    </div>
+    <movies-header @searchMovieByDate="searchMovieByDate"/>
+
+    <movies :allMovies="allMovies" :genres="genres"/>
 
     <pagination 
       v-if="!filteredFlag"
@@ -28,15 +19,17 @@
 <script>
 
 import axios from 'axios'
-import MovieItem from '../components/movies/MovieItem.vue'
+import Movies from '../components/movies/MoviesWrapper.vue'
 import _ from 'lodash';
 import Pagination from '../components/shared/Pagination.vue'
+import MoviesHeader from '../components/movies/MoviesHeader.vue';
 export default {
   
   name: 'HomeView',
   components: {
-    MovieItem,
-    Pagination
+    Movies,
+    Pagination,
+    MoviesHeader,
   },
   data: () =>({
     movies:[],
@@ -46,7 +39,6 @@ export default {
     allMovies:[],
     startIndex:1,
     filteredFlag:false,
-    dateInput:'2018-07-22'
   }),
   created(){
     this.getListOfMovies()
@@ -81,49 +73,18 @@ export default {
     onPageChange(page){
       this.currentPage = page
     },
-    searchMovieByDate(){
+    searchMovieByDate(dateValue){
       this.filteredFlag=true
       const movies = this.movies
-      const filteredMovies = movies.filter(movie => movie.release_date === this.dateInput)
+      const filteredMovies = movies.filter(movie => movie.release_date === dateValue)
       this.allMovies = filteredMovies
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-  .header{
-      background: #E2E2E2;
-      border-radius: 6px;
-      display: flex;
-      justify-content: space-between;
-      padding: 18px 80px;
-      margin-bottom: 78px;
-      align-items: center;
-      label{
-        margin-right:24px;
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 19px;
-      }
-      input{
-        border: 1px solid #CFCFCF
-      }
-      button{
-         background: #549DF2;
-         border-radius: 100px;
-         color: white;
-         align-self: center;
-         padding: 7px 14px;
-         text-decoration: none;
-         border:0px;
-      }
-  }
-  .movies{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start
-  }
+
+
   .results{
     font-weight: 400;
     font-size: 16px;
